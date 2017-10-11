@@ -26,3 +26,4 @@ public/.DS_Store
 .docker
 vendor
 protected/runtime
+.php_cs.cache
