@@ -23,7 +23,7 @@ $config['http']['domain']         = [
     '192.168.53.10' => [
         'root'  => ROOT_PATH . '/www/',
         'index' => ROOT_PATH . '/www/index.html',
-    ],
+    ]
 ];
 // http访问时默认方法
 $config['http']['default_method'] = 'Index';

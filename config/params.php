@@ -29,4 +29,5 @@ $config['params']['i18n'] = [
         ]
     ],
 ];
+
 return $config;
