@@ -14,6 +14,7 @@ class Welcome extends Controller
 {
     public function actionIndex()
     {
-        $this->output('hello world!');
+        $divide = 58/100;
+        $this->output($divide);
     }
 }

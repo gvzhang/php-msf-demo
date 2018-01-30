@@ -11,16 +11,20 @@
 namespace App\Controllers;
 
 use PG\MSF\Controllers\Controller;
-use App\Tasks\Demo as DemoTask;
+use App\Tasks\MySQL as MysqlTask;
 
 class MySQL extends Controller
 {
-    // MySQL连接池示例
-    public function actionBizLists()
+    /**
+     * @brief actionInitDB 初始化数据库
+     *
+     * @return
+     */
+    public function actionInitDB()
     {
-        // SQL DBBuilder更多参考 https://github.com/jstayton/Miner
-        $bizLists  = yield $this->getMysqlPool('master')->select("*")->from('biz')->go();
-        $this->outputJson($bizLists);
+        $mysqlTask = $this->getObject(MysqlTask::class);
+        $user     = yield $mysqlTask->InitDB();
+        $this->outputJson($user);
     }
 
     // 直接执行sql
@@ -35,14 +39,13 @@ class MySQL extends Controller
     {
         $mysqlPool = $this->getMysqlPool('master');
         // 开启一个事务，并返回事务ID
-        $id = yield $mysqlPool->goBegin();
-        $up = yield $mysqlPool->update('user')->set('name', '徐典阳-1')->where('id', 3)->go($id);
-        $ex = yield $mysqlPool->select('*')->from('user')->where('id', 3)->go($id);
-        if ($ex['result']) {
-            yield $mysqlPool->goCommit($id);
+        //$id = yield $mysqlPool->goBegin();
+        $goodsInfo = yield $mysqlPool->go($id, "select * from sk_goods where id = 1");
+        if ($goodsInfo['result']) {
+            //yield $mysqlPool->goCommit($id);
             $this->outputJson('commit');
         } else {
-            yield $mysqlPool->goRollback($id);
+            //yield $mysqlPool->goRollback($id);
             $this->outputJson('rollback');
         }
     }
@@ -51,9 +54,9 @@ class MySQL extends Controller
     public function actionProxy()
     {
         $mysqlProxy = $this->getMysqlProxy('master_slave');
-        $bizLists   = yield $mysqlProxy->select("*")->from('user')->go();
+        $goodsList   = yield $mysqlProxy->select("*")->from('user')->go();
         $up         = yield $mysqlProxy->update('user')->set('name', '徐典阳-6')->where('id', 3)->go();
-        $this->outputJson($bizLists);
+        $this->outputJson($goodsList);
     }
 
     // MySQL代理事务，事务只会在主节点上执行

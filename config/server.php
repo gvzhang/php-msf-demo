@@ -17,7 +17,7 @@ $config['server']['set'] = [
     // swoole server的reactor数量
     'reactor_num'              => 2,
     // swoole server的worker数量
-    'worker_num'               => 1,
+    'worker_num'               => 4,
     // swoole server的task worker数量
     'task_worker_num'          => 2,
     // swoole server的backlog队列长度
@@ -40,7 +40,7 @@ $config['server']['async_io'] = [
 ];
 
 //协程超时时间
-$config['coroutine']['timeout'] = 5000;
+$config['coroutine']['timeout'] = 60000;
 
 //配置进程
 $config['config_manage_enable'] = true;

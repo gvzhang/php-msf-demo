@@ -10,7 +10,7 @@
 define('ROOT_PATH', __DIR__);
 define('APP_DIR', ROOT_PATH . '/app');
 define('APPLICATION_ENV', $_ENV['MSF_ENV'] ?? 'docker');
-define('SYSTEM_NAME', 'demo');
+define('SYSTEM_NAME', 'seconds-kill-system');
 define("WWW_DIR", realpath(dirname(__FILE__) . '/..'));
 define('RUNTIME_DIR', WWW_DIR . '/runtime/' . SYSTEM_NAME);
 define('DUMP_TRUNCATED', true);

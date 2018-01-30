@@ -2,17 +2,65 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>PHP-MSF</title>
+  <title>GZ抢购</title>
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script type="text/javascript">
+        $(function(){
+                var is_login = function(){
+                    var uid = $.cookie("uid");
+                    if(uid){
+                        $.get("http://192.168.53.10:82/user/info?uid="+uid, function(result){
+                            if(result==false){
+                                window.location.href="login.html";
+                            }
+                        });
+                    }else{
+                        window.location.href="login.html";
+                    }
+                };
+                is_login();
+
+                var get_goods_info = function(){
+                    $.get("http://192.168.53.10:82/goods/detail?id=1", function(result){
+                        $("#goods_name").text(result.goods_name);
+                        $("#goods_stock").text(result.stock);
+                    });
+                };
+                get_goods_info();
+
+                var can_kill=1;
+                $("#btn_kill").click(function(){
+                    var uid = $.cookie("uid");
+                    var gid = 1;
+                    if(can_kill==1){
+                        can_kill=0;
+                        setTimeout(function(){can_kill=1;}, 2000);
+                        $.ajax({
+                            type: "POST",
+                            url: "http://192.168.53.10:82/order/submit",
+                            data: {uid:uid, gid:gid},
+                            dataType: "json",
+                            success: function(data){
+                                window.location.reload();
+                            }
+                        });
+                    }
+                });
+
+                $("#btn_logout").click(function(){
+                    $.removeCookie("uid");
+                    window.location.href="login.html";
+                });
+        });
+  </script>
 </head>
 <body>
 <div>
-  <p align="center">
-    <a href="https://github.com/pinguo/php-msf" target="_blank">
-      <img src="https://github.com/pinguo/php-msf/raw/master/php-msf.png" style="max-width:100%;">
-    </a>
-  </p>
-  <p align="center" style="font-size: 20px; font-weight: bolder;">PHP-MSF DEMO</p>
-  <p align="center">PHP微服务框架即“Micro Service Framework For PHP”示例项目</p>
+    <input id="btn_logout" type="button" value="登出" />
+    <h1>商品名：<span id="goods_name"></span></h1>
+    <h2>库存：<span id="goods_stock"></span></h2>
+    <input id="btn_kill" type="button" value="抢购" />
 </div>
 </body>
 </html>

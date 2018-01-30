@@ -684,12 +684,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pinguo/php-msf.git",
-                "reference": "105f11f2f9a1be0eabb77d782083cc348320992c"
+                "reference": "bdf5d5a4834e9f4c474fb4f54255c498d2c32712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/pinguo/php-msf/105f11f2f9a1be0eabb77d782083cc348320992c.zip",
-                "reference": "105f11f2f9a1be0eabb77d782083cc348320992c",
+                "url": "https://files.phpcomposer.com/files/pinguo/php-msf/bdf5d5a4834e9f4c474fb4f54255c498d2c32712.zip",
+                "reference": "bdf5d5a4834e9f4c474fb4f54255c498d2c32712",
                 "shasum": ""
             },
             "require": {
@@ -724,7 +724,7 @@
             ],
             "description": "Pinguo Micro Service Framework For PHP",
             "homepage": "https://github.com/pinguo/php-msf",
-            "time": "2017-12-27T08:55:21+00:00"
+            "time": "2018-01-08T05:50:53+00:00"
         },
         {
             "name": "psr/http-message",
