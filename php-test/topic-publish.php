@@ -1,15 +1,15 @@
 <?php
 /**
-* @file direct-publish.php
-* @brief 直连交换机-发布者
-* @brief 直连交换机是一种带路由功能的交换机，一个队列会和一个交换机绑定，
-* @brief 除此之外再绑定一个routing_key，当消息被发送的时候，需要指定一个binding_key，
-* @brief 这个消息被送达交换机的时候，就会被这个交换机送到指定的队列里面去。
-* @brief 同样的一个binding_key也是支持应用到多个队列中的。
+* @file topic-publish.php
+* @brief 主题交换机-生产者
+* @brief 主题交换机的routing_key需要有一定的规则，交换机和队列的binding_key需要采用*.#.*.....的格式，每个部分用.分开，其中：
+* @brief *表示一个单词
+* @brief #表示任意数量（零个或多个）单词。
 * @author zhangguangjian <johnzhangbkb@gmail.com>
 * @version 1.0
 * @date 2018-01-30
  */
+
 $conn_args = array(
     'host' => 'rabbitmq',
     'port' => '5672',
@@ -18,7 +18,8 @@ $conn_args = array(
     'vhost'=>'/'
 );
 
-$e_name = 'e-route-test'; //交换机名
+$e_name = 'e-topic-test'; //交换机名
+$r_key = "kern.critical";
 
 try {
     //创建连接和channel
@@ -32,14 +33,13 @@ try {
     $ex = new AMQPExchange($channel);
     $ex->setName($e_name);
     $ex->setFlags(AMQP_DURABLE);
-    $ex->setType(AMQP_EX_TYPE_DIRECT); //direct类型
+    $ex->setType(AMQP_EX_TYPE_TOPIC); //direct类型
     echo "Exchange Status:".$ex->declare()."\n";
 
     //发送消息
     while (true) {
-        $severity = mt_rand(0, 1)?"error":"info";
-        $data = "send ".$severity;
-        echo time()."Send Message:".$ex->publish($data, $severity, AMQP_NOPARAM, ["delivery_mode"=>AMQP_DURABLE])."\n";
+        $data = "A critical kernel error";
+        echo time()."Send Message:".$ex->publish($data, $r_key, AMQP_NOPARAM, ["delivery_mode"=>AMQP_DURABLE])."\n";
         usleep(100000);
     }
 
